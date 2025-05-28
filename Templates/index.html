@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home - Stray Dog Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .feature-card {
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .feature-card:hover {
+      transform: scale(1.03);
+    }
+    .feature-img {
+      max-height: 200px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">🐶 Stray Dog Tracker</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        {% if session.get('username') %}
+          <li class="nav-item"><a class="nav-link text-warning" href="/logout">Logout ({{ session.get('username') }})</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="flex-grow-1">  <!-- 💡 New main wrapper added -->
+  <div class="container mt-5 text-center">
+    <h1 class="mb-4">Welcome to the Stray Dog Tracker</h1>
+    <p class="lead mb-5">Use AI to recognize dog breeds, report stray dogs, and help animal welfare organizations in real time.</p>
+
+    <div class="row">
+      <!-- Report -->
+      <div class="col-md-4 mb-4">
+        <a href="/report" style="text-decoration: none;">
+          <div class="card feature-card shadow">
+            <img src="{{ url_for('static', filename='images/dog-report.jpg') }}" class="card-img-top feature-img" alt="Report">
+            <div class="card-body">
+              <h4 class="card-title">📸 Report a Stray</h4>
+              <p class="card-text text-muted">See a stray? Let us know with a photo and GPS.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Recognition -->
+      <div class="col-md-4 mb-4">
+        <a href="/recognition" style="text-decoration: none;">
+          <div class="card feature-card shadow">
+            <img src="{{ url_for('static', filename='images/dog-breed.jpg') }}" class="card-img-top feature-img" alt="Recognize">
+            <div class="card-body">
+              <h4 class="card-title">🧠 Breed Recognition</h4>
+              <p class="card-text text-muted">Use AI to identify the dog breed from a photo.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- View Reports (for workers only) -->
+      {% if session.get('role') == 'worker' %}
+      <div class="col-md-4 mb-4">
+        <a href="/reports" style="text-decoration: none;">
+          <div class="card feature-card shadow">
+            <img src="{{ url_for('static', filename='images/manage-reports.jpg') }}" class="card-img-top feature-img" alt="Reports">
+            <div class="card-body">
+              <h4 class="card-title">📂 View Reports</h4>
+              <p class="card-text text-muted">Review and manage all reports submitted.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
+
+<footer class="bg-dark text-white text-center py-3">
+  © {{ current_year }} Stray Dog Tracker. All rights reserved.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
