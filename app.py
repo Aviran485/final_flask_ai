@@ -129,16 +129,13 @@ def view_reports():
 
     query = "SELECT * FROM reports WHERE 1=1"
     params = []
-
     if start and end:
         query += " AND created_at BETWEEN ? AND ?"
         params.extend([start, end])
-
     if handled_status == 'handled':
         query += " AND handled = 1"
     elif handled_status == 'unhandled':
         query += " AND handled = 0"
-
     if worker_filter and worker_filter != 'all':
         query += " AND handled_by = ?"
         params.append(worker_filter)
@@ -153,7 +150,6 @@ def view_reports():
     total = len(reports)
     handled_count = sum(1 for r in reports if r['handled'] == 1)
     unhandled_count = total - handled_count
-
     breed_counter = Counter(r['prediction'] for r in reports if r['prediction'] and r['prediction'] != "Unknown")
 
     filters = {
@@ -163,24 +159,19 @@ def view_reports():
         'worker': worker_filter or 'all'
     }
 
-    return render_template(
-        'reports.html',
-        reports=reports,
-        workers=workers,
-        stats={
-            'total': total,
-            'handled': handled_count,
-            'unhandled': unhandled_count,
-            'predictions': dict(breed_counter)
-        },
-        filters=filters
-    )
+    return render_template('reports.html',
+                           reports=reports,
+                           workers=workers,
+                           stats={'total': total, 'handled': handled_count, 'unhandled': unhandled_count,
+                                  'predictions': dict(breed_counter)},
+                           filters=filters)
+
 
 
 
 @app.route('/report/<int:report_id>')
 def report_detail(report_id):
-    if session.get('role') != 'worker':
+    if session.get('role') not in ['worker', 'admin']:
         flash('Unauthorized')
         return redirect(url_for('index'))
     conn = get_db_connection()
