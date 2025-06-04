@@ -9,6 +9,15 @@
 <main class="container flex-grow-1 my-5" style="max-width: 400px;">
   <div class="card shadow p-4">
     <h2 class="text-center mb-4">🔐 Login</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-danger text-center">
+          {{ messages[0] }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
     <form method="POST">
       <div class="mb-3">
         <label class="form-label">Username</label>

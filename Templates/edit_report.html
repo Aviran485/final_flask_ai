@@ -1,31 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Edit Report</title>
+  <meta charset="UTF-8">
+  <title>Edit Report - Stray Dog Tracker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">🐶 Stray Dog Tracker</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        {% if session.get('role') == 'worker' %}
+          <li class="nav-item"><a class="nav-link" href="/recognition">Recognition</a></li>
+          <li class="nav-item"><a class="nav-link" href="/report">Report</a></li>
+          <li class="nav-item"><a class="nav-link" href="/reports">View Reports</a></li>
+        {% endif %}
+        {% if session.get('username') %}
+          <li class="nav-item"><a class="nav-link text-warning" href="/logout">Logout ({{ session.get('username') }})</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <main class="container flex-grow-1 my-5">
   <h2 class="mb-4 text-center">✏️ Edit Report #{{ report.id }}</h2>
   <form method="POST" enctype="multipart/form-data" class="card p-4 shadow">
     <div class="mb-3">
-      <label>Description</label>
+      <label class="form-label">Description</label>
       <input type="text" name="description" class="form-control" value="{{ report.description }}" required>
     </div>
     <div class="mb-3">
-      <label>Latitude</label>
+      <label class="form-label">Latitude</label>
       <input type="text" name="latitude" class="form-control" value="{{ report.latitude }}">
     </div>
     <div class="mb-3">
-      <label>Longitude</label>
+      <label class="form-label">Longitude</label>
       <input type="text" name="longitude" class="form-control" value="{{ report.longitude }}">
     </div>
     <button type="submit" class="btn btn-primary w-100">💾 Save Changes</button>
   </form>
 </main>
 
-<footer class="bg-dark text-white text-center py-3 mt-4">
+<footer class="bg-dark text-white text-center py-3 mt-auto">
   © {{ current_year }} Stray Dog Tracker. All rights reserved.
 </footer>
 

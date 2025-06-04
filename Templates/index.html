@@ -26,6 +26,10 @@
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
         <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        {% if session.get('role') == 'worker' %}
+          <li class="nav-item"><a class="nav-link" href="/recognition">Recognition</a></li>
+          <li class="nav-item"><a class="nav-link" href="/report">Report</a></li>
+        {% endif %}
         {% if session.get('username') %}
           <li class="nav-item"><a class="nav-link text-warning" href="/logout">Logout ({{ session.get('username') }})</a></li>
         {% else %}
@@ -36,7 +40,7 @@
   </div>
 </nav>
 
-<main class="flex-grow-1">  <!-- 💡 New main wrapper added -->
+<main class="flex-grow-1">
   <div class="container mt-5 text-center">
     <h1 class="mb-4">Welcome to the Stray Dog Tracker</h1>
     <p class="lead mb-5">Use AI to recognize dog breeds, report stray dogs, and help animal welfare organizations in real time.</p>
@@ -68,8 +72,8 @@
         </a>
       </div>
 
-      <!-- View Reports (for workers only) -->
       {% if session.get('role') == 'worker' %}
+      <!-- View Reports -->
       <div class="col-md-4 mb-4">
         <a href="/reports" style="text-decoration: none;">
           <div class="card feature-card shadow">
